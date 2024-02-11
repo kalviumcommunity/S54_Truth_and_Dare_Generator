@@ -1,6 +1,7 @@
 const express = require("express");
 const app = express();
-
+const Mongodb=require("./mongodb")
+Mongodb()
 app.get("/ping", (req, res) => res.send("pong"));
 
 if (require.main === module) {
