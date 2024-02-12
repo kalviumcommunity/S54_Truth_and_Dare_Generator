@@ -1,11 +1,26 @@
-const express = require("express");
-const app = express();
-const Mongodb=require("./mongodb")
-Mongodb()
-app.get("/ping", (req, res) => res.send("pong"));
+require("dotenv").config();
 
-if (require.main === module) {
-    app.listen(3000, () => {
-      console.log("🚀 server running on PORT: 3000");
-    });
-  }
+const express = require("express");
+const mongoose = require("mongoose");
+
+const tdRoutes = require("./Routes.js");
+
+const app = express();
+
+mongoose
+  .connect(process.env.MongoURI)
+  .then(() => console.log("Connected to MongoDB 🚀"))
+  .catch((err) => console.error("Failed to connect to MongoDB ❌", err));
+
+app.use(express.json())
+
+app.use("/td", tdRoutes);
+
+app.get("/ping", (req, res) => {
+  res.send("pong");
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+  console.log(`🚀 server running on PORT: ${PORT}`);
+});
