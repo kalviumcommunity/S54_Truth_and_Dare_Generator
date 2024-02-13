@@ -1,5 +1,5 @@
 import React from 'react'
-import logo from "../assets/logo.png"
+// import logo from "../assets/logo.png"
 import { Box, Flex, Stack, Heading, Text, VStack, HStack } from '@chakra-ui/layout'
 import { ChevronUpIcon } from '@chakra-ui/icons'
 import GitHubIcon from '@mui/icons-material/GitHub'
