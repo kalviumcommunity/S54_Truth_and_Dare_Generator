@@ -7,6 +7,9 @@ const tdSchema = new mongoose.Schema({
   likes: {
     type: Number,
   },
+  category:{
+    type:String,
+  },
   text: {
     type: String,
   }
