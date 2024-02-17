@@ -12,6 +12,6 @@ const tdSchema = new mongoose.Schema({
   }
 });
 
-const td = mongoose.model("td", tdSchema);
+const td = mongoose.model("tds", tdSchema);
 
 module.exports = td;

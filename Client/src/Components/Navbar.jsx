@@ -56,7 +56,7 @@ const Navbar = () => {
         borderRadius="50px"
         border="none"
         px="2vw"
-        py="1vh"
+        py="1.6vh"
         cursor={"pointer"}
       >
         Sign Up
