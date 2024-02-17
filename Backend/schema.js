@@ -7,11 +7,14 @@ const tdSchema = new mongoose.Schema({
   likes: {
     type: Number,
   },
+  category:{
+    type:String,
+  },
   text: {
     type: String,
   }
 });
 
-const td = mongoose.model("td", tdSchema);
+const td = mongoose.model("tds", tdSchema);
 
 module.exports = td;
