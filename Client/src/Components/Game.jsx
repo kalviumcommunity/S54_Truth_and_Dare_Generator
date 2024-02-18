@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Button } from '@chakra-ui/button'
 import curve from "../assets/curve.svg"
 import arrow from "../assets/arrow-r.svg"
@@ -11,7 +11,21 @@ import Teens from "../assets/teens.svg"
 
 const Game = () => {
     const { category, setCategory } = useContext(AppContext)
-
+    const [tdData,settdData]=useState([]);
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await fetch('https://truth-and-dare-generator.onrender.com/td');
+                const data = await response.json();
+                const filteredData = data.filter(item => item.category === category);
+                settdData(filteredData);
+                console.log(filteredData)
+            } catch (error) {
+                console.error('Error fetching data:', error);
+            }
+        };
+        fetchData();
+    }, []);
     return (
         <div className="game" style={{
             height: '78%',
@@ -23,7 +37,7 @@ const Game = () => {
             alignItems: "center",
             borderRadius: '25px',
             textAlign: 'center',
-            position:"relative"
+            position: "relative"
         }}>
 
             <div className="curve-container" style={{
@@ -39,8 +53,8 @@ const Game = () => {
                     color: 'white',
                     position: 'absolute',
                     zIndex: '999',
-                    width:"100%",
-                    textAlign:"center",
+                    width: "100%",
+                    textAlign: "center",
                     top: '25%',
                     fontSize: 'larger'
                 }}>
@@ -52,16 +66,17 @@ const Game = () => {
                 display: 'flex',
                 justifyContent: 'space-between',
                 borderRadius: '50px',
-                padding: '1vmin 2vmin',
+                paddingRight: '2vmin',
                 cursor: 'pointer',
-                width: "45%",
+                width: "40%",
                 alignItems: 'center',
                 backgroundColor: '#EAF0FF'
             }} onClick={() => setCategory('')}>
                 <div className="category-content" style={{
                     display: 'flex',
                     alignItems: 'center',
-                    fontSize: '1.9vmax',
+                    justifyContent: "space-between",
+                    fontSize: '1.5vmax',
                     fontWeight: '600'
                 }}>
                     {{
@@ -75,12 +90,13 @@ const Game = () => {
                 <img src={arrow} alt="" style={{ transform: "rotate(90deg)" }} />
             </button>
 
-            {/* <div>
+            <div style={{ padding: "1vmax 3vmax" }}>
                 <h2>Dare</h2>
-                <h3>You have dares left.</h3>
-            </div> */}
+                <br />
+                <h3 style={{ fontFamily: "Open Sans" }}>Hop around to each person at the party saying, "I'm cupid, and I will help you find love!"</h3>
+            </div>
 
-            <div className='button-container' style={{ width: "100%", display: "flex", justifyContent: "space-around", position:"absolute",bottom:"2vmin"}}>
+            <div className='button-container' style={{ width: "100%", display: "flex", justifyContent: "space-around", position: "absolute", bottom: "2vmin" }}>
                 <Button
                     bg="#069DFF"
                     color="white"
@@ -93,7 +109,7 @@ const Game = () => {
                     width={"11vmax"}
                     cursor={"pointer"}
                     boxShadow={"1px 10px 8px #888888"}
-                    // _active={transform(scale())}
+                // _active={transform(scale())}
                 >
                     Truth
                 </Button>
@@ -109,7 +125,7 @@ const Game = () => {
                     py="1.6vh"
                     cursor={"pointer"}
                     boxShadow={"1px 10px 8px #888888"}
-                    // _active={transform(scale())}
+                // _active={transform(scale())}
                 >
                     Dare
                 </Button>
