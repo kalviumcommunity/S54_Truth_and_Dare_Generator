@@ -10,7 +10,7 @@ import { Link } from 'react-router-dom'
 import { AppContext } from '../context/ParentContext'
 
 
-const GameStarter = () => {
+const GameStart = () => {
     const { category, setCategory } = useContext(AppContext)
     return (
         <div className="game-starter" style={{
@@ -131,4 +131,4 @@ const GameStarter = () => {
     )
 }
 
-export default GameStarter
+export default GameStart
