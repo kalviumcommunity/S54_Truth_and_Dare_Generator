@@ -1,48 +1,52 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { Button } from '@chakra-ui/button';
-import curve from "../assets/curve.svg";
-import arrow from "../assets/arrow-r.svg";
-import { AppContext } from '../context/ParentContext';
-import Classic from "../assets/classic.svg";
-import Party from "../assets/party.svg";
-import Mixed from "../assets/mixed.svg";
-import Teens from "../assets/teens.svg";
+import React, { useContext, useEffect, useState } from 'react'
+import { Button } from '@chakra-ui/button'
+import curve from "../assets/curve.svg"
+import arrow from "../assets/arrow-r.svg"
+import { AppContext } from '../context/ParentContext'
+import Classic from "../assets/classic.svg"
+import Party from "../assets/party.svg"
+import Mixed from "../assets/mixed.svg"
+import Teens from "../assets/teens.svg"
+import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
+import axios from 'axios'
 
 const Game = () => {
-    const { category, setCategory } = useContext(AppContext);
-    const [truthData, setTruthData] = useState([]);
-    const [dareData, setDareData] = useState([]);
-    const [selectedTruth, setSelectedTruth] = useState(null);
-    const [selectedDare, setSelectedDare] = useState(null);
-    const [key, setKey] = useState(0); // Key to trigger rerender
+    const { category, setCategory } = useContext(AppContext)
+    const [truthData, setTruthData] = useState([])
+    const [dareData, setDareData] = useState([])
+    const [selectedTruth, setSelectedTruth] = useState(null)
+    const [selectedDare, setSelectedDare] = useState(null)
+    const [key, setKey] = useState(0)
 
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('https://truth-and-dare-generator.onrender.com/td');
-                const data = await response.json();
-                const filteredTruthData = data.filter(item => item.category === `${category}` && item.type === 'truth');
-                const filteredDareData = data.filter(item => item.category === `${category}` && item.type === 'dare');
-                setTruthData(filteredTruthData);
-                setDareData(filteredDareData);
+                const response = await axios.get('https://truth-and-dare-generator.onrender.com/td')
+                const data = response.data
+                const filteredTruthData = data.filter(item => item.category === `${category}` && item.type === 'truth')
+                const filteredDareData = data.filter(item => item.category === `${category}` && item.type === 'dare')
+                setTruthData(filteredTruthData)
+                console.log("filteredTruthData: ", filteredTruthData)
+                setDareData(filteredDareData)
+                console.log("filteredDareData: ", filteredDareData)
             } catch (error) {
-                console.error('Error fetching data:', error);
+                console.error('Error fetching data:', error)
             }
-        };
-        fetchData();
-    }, [category, key]); // Include key in dependencies
+        }
+        fetchData()
+    }, [category, key]) 
 
     const handleTruthClick = () => {
-        setSelectedTruth(truthData[Math.floor(Math.random() * truthData.length)]);
-        setSelectedDare(null); // Reset selected dare
-        setKey(prevKey => prevKey + 1); // Increment key to trigger rerender
-    };
+        setSelectedTruth(truthData[Math.floor(Math.random() * truthData.length)])
+        setSelectedDare(null)
+        setKey(prevKey => prevKey + 1) 
+    }
 
     const handleDareClick = () => {
-        setSelectedDare(dareData[Math.floor(Math.random() * dareData.length)]);
-        setSelectedTruth(null); // Reset selected truth
-        setKey(prevKey => prevKey + 1); // Increment key to trigger rerender
-    };
+        setSelectedDare(dareData[Math.floor(Math.random() * dareData.length)])
+        setSelectedTruth(null) 
+        setKey(prevKey => prevKey + 1)
+    }
 
     return (
         <div className="game" style={{
@@ -92,14 +96,15 @@ const Game = () => {
                     alignItems: 'center',
                     justifyContent: "space-between",
                     fontSize: '1.5vmax',
-                    fontWeight: '600',
+                    fontWeight: '600'
                 }}>
-                    {{
-                        Classic: <img src={Classic} alt="" />,
-                        Party: <img src={Party} alt="" />,
-                        Teens: <img src={Teens} alt="" />,
-                        Mixed: <img src={Mixed} alt="" />
-                    }[category] || <img src={Classic} alt="" />}
+                    {
+                        {
+                            Classic: <img src={Classic} alt="" />,
+                            Party: <img src={Party} alt="" />,
+                            Teens: <img src={Teens} alt="" />,
+                            Mixed: <img src={Mixed} alt="" />
+                        }[category] || <img src={Classic} alt="" />}
                     <span>{category}</span>
                 </div>
                 <img src={arrow} alt="" style={{ transform: "rotate(90deg)" }} />
@@ -107,16 +112,24 @@ const Game = () => {
             <div style={{ padding: "1vmax 3vmax" }}>
                 {selectedTruth && (
                     <>
-                        <h2>Truth</h2>
+                        <h2 style={{ textDecoration: "underline" }}>Truth</h2>
+                        <br />
                         <h3 style={{ fontFamily: "Open Sans" }}>{selectedTruth.text}</h3>
-                        <p>Likes: {selectedTruth.likes}</p>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                            <ThumbUpOutlinedIcon />
+                            <h3> {selectedTruth.likes}</h3>
+                        </div>
                     </>
                 )}
                 {selectedDare && (
                     <>
-                        <h2>Dare</h2>
+                        <h2 style={{ textDecoration: "underline" }}>Dare</h2>
+                        <br />
                         <h3 style={{ fontFamily: "Open Sans" }}>{selectedDare.text}</h3>
-                        <p>Likes: {selectedDare.likes}</p>
+                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                            <ThumbUpOutlinedIcon />
+                            <h3> {selectedDare.likes}</h3>
+                        </div>
                     </>
                 )}
             </div>
@@ -132,8 +145,9 @@ const Game = () => {
                     py="1.6vh"
                     width={"11vmax"}
                     cursor={"pointer"}
-                    boxShadow={"1px 10px 8px #888888"}
+                    _hover={{ boxShadow: "1px 10px 8px #888888" }}
                     onClick={handleTruthClick}
+                    _active={{ transform: "scale(0.96)" }}
                 >
                     Truth
                 </Button>
@@ -148,14 +162,15 @@ const Game = () => {
                     px="2vw"
                     py="1.6vh"
                     cursor={"pointer"}
-                    boxShadow={"1px 10px 8px #888888"}
+                    _hover={{ boxShadow: "1px 10px 8px #888888" }}
+                    _active={{ transform: "scale(0.96)" }}
                     onClick={handleDareClick}
                 >
                     Dare
                 </Button>
             </div>
         </div>
-    );
+    )
 }
 
-export default Game;
+export default Game
