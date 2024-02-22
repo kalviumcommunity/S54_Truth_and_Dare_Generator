@@ -28,6 +28,7 @@ router.post("/", async (req, res) => {
   const tds = new td({
     type: req.body.type,
     likes: req.body.likes,
+    category: req.body.category,
     text: req.body.text,
   });
 

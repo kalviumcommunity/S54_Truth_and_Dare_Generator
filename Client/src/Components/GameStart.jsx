@@ -36,7 +36,6 @@ const GameStart = () => {
                 <div className="title" style={{
                     color: 'white',
                     position: 'absolute',
-                    zIndex: '999',
                     width: "100%",
                     textAlign: "center",
                     top: '25%',
