@@ -5,6 +5,7 @@ import { AppContext } from '../context/ParentContext';
 import { useContext } from 'react'
 import Navbar from './Navbar';
 import Footer from './Footer';
+import CreateTD from './CreateTD';
 
 const Home = () => {
   const { category,setCategory} = useContext(AppContext)
@@ -15,6 +16,7 @@ const Home = () => {
       <div style={{ height: "88vh",width:"100%", textAlign: "center",display:"flex",justifyContent:"center",alignItems:"center" }}>
         {category ? <Game  /> : <GameStart />}
       </div>
+      <CreateTD/>
       <Footer/>
     </div>
   )
