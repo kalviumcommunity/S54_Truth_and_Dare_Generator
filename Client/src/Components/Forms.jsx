@@ -15,7 +15,6 @@ const Forms = ({ handleCloseModal }) => {
             try {
                 let res = await axios.post('https://truth-and-dare-generator.onrender.com/td', data);
                 console.log(data)
-                //   redirect("/stunt")
                 console.log(res)
                 console.log('TD posted successfully!');
             } catch (err) {
@@ -41,11 +40,11 @@ const Forms = ({ handleCloseModal }) => {
                     <h3>Type : </h3>
                     <div style={{ padding: "3px", display: "flex", justifyContent: "space-around", color: "white" }}>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            <input type="radio" {...register("type", { required: "Select Type" })} value="Truth" />
+                            <input type="radio" {...register("type", { required: "Select Type" })} value="truth" />
                             <h4>Truth</h4>
                         </div>
                         <div style={{ display: "flex", alignItems: "center" }}>
-                            <input type="radio" {...register("type", { required: "Select Type" })} value="Dare" />
+                            <input type="radio" {...register("type", { required: "Select Type" })} value="dare" />
                             <h4>Dare</h4>
                         </div>
                     </div>
