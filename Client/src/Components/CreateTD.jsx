@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import {
     Button,
     Modal,
@@ -8,10 +8,12 @@ import {
     useColorModeValue
 } from '@chakra-ui/react'
 import Forms from './Forms'
+import { AppContext } from '../context/ParentContext'
 
 
 const CreateTD = () => {
     const [isOpen, setIsOpen] = useState(false)
+    const { category, setCategory } = useContext(AppContext)
 
     const handleOpenModal = () => {
         setIsOpen(true)
@@ -19,6 +21,7 @@ const CreateTD = () => {
 
     const handleCloseModal = () => {
         setIsOpen(false)
+        setCategory('')
     }
 
     const overlayColor = useColorModeValue('rgba(0, 0, 0, 0.6)', 'rgba(0, 0, 0, 0.6)')
@@ -49,7 +52,7 @@ const CreateTD = () => {
                 <ModalContent
                     bg="#F7174E"
                     w="40vw"
-                    h="60vh"
+                    h="63vh"
                     position={"fixed"}
                     top={"25%"}
                     left={"29%"}
@@ -61,7 +64,7 @@ const CreateTD = () => {
                     p="10"
                 >
                     <div style={{ display: "flex", flexDirection: "column", alignSelf: "center", justifyContent: "center", width: "100%", textAlign: "center", color: "white" }}>
-                        <ModalCloseButton alignSelf={"flex-end"} width={"2vmax"} height={"2vmax"} borderRadius={"10px"} border={"none"} color={"#F7174E"} />
+                        <ModalCloseButton alignSelf={"flex-end"} width={"2vmax"} height={"2vmax"} borderRadius={"10px"} border={"none"} color={"#F7174E"} cursor={"pointer"}/>
                         <h1>Add a Truth or Dare</h1>
                     </div>
 
