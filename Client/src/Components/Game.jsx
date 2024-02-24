@@ -1,4 +1,3 @@
-
 import React, { useContext, useEffect, useState } from 'react'
 import { Button } from '@chakra-ui/button'
 import curve from "../assets/curve.svg"
@@ -56,7 +55,7 @@ const Game = () => {
     }
     const handleLikeClick = async (type, itemId) => {
         try {
-            const res = await axios.patch(`http://localhost:3000/td/${itemId}`, { action: 'like' });
+            const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { action: 'like' });
             console.log("response: ", res);
             const updatedLikes = res.data.likes;
             if (type === 'truth') {
@@ -71,7 +70,7 @@ const Game = () => {
 
     const handleDeleteClick = async (itemId) => {
         try {
-            const res = await axios.delete(`http://localhost:3000/td/${itemId}`);
+            const res = await axios.delete(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
             console.log("res: ", res);
             if (res.status === 200) {
                 toast("Deleted Successfully", { theme: "light" });
