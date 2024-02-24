@@ -42,12 +42,12 @@ router.post("/", async (req, res) => {
 
 router.patch("/:id", async (req, res) => {
   try {
-    const tds = await td.findById(req.params.id);
-    if (!tds) {
+    const tdItem = await td.findById(req.params.id);
+    if (!tdItem) {
       return res.status(404).json({ error: "td not found" });
     }
-    tds.likes = req.body.likes;
-    const updatedTd = await tds.save();
+    tdItem.likes += 1;
+    const updatedTd = await tdItem.save();
     res.json(updatedTd);
   } catch (err) {
     res.status(400).json({ error: err.message });

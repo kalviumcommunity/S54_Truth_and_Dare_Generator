@@ -9,6 +9,9 @@ import Mixed from "../assets/mixed.svg"
 import Teens from "../assets/teens.svg"
 import ThumbUpOutlinedIcon from '@mui/icons-material/ThumbUpOutlined'
 import axios from 'axios'
+import DeleteOutlineIcon from '@mui/icons-material/DeleteOutline';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Game = () => {
     const { category, setCategory } = useContext(AppContext)
@@ -34,20 +37,51 @@ const Game = () => {
             }
         }
         fetchData()
-    }, [category, key]) 
+    }, [category, key])
 
     const handleTruthClick = () => {
         setSelectedTruth(truthData[Math.floor(Math.random() * truthData.length)])
         setSelectedDare(null)
-        setKey(prevKey => prevKey + 1) 
+        setKey(prevKey => prevKey + 1)
     }
 
     const handleDareClick = () => {
         setSelectedDare(dareData[Math.floor(Math.random() * dareData.length)])
-        setSelectedTruth(null) 
+        setSelectedTruth(null)
         setKey(prevKey => prevKey + 1)
     }
+    const emptyCategory=()=>{
+        setCategory('')
+    }
+    const handleLikeClick = async (type, itemId) => {
+        try {
+            const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { action: 'like' });
+            console.log("response: ", res);
+            const updatedLikes = res.data.likes;
+            if (type === 'truth') {
+                setSelectedTruth(prevTruth => ({ ...prevTruth, likes: updatedLikes }));
+            } else if (type === 'dare') {
+                setSelectedDare(prevDare => ({ ...prevDare, likes: updatedLikes }));
+            }
+        } catch (error) {
+            console.error('Error updating likes:', error);
+        }
+    };
 
+    const handleDeleteClick = async (itemId) => {
+        try {
+            const res = await axios.delete(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
+            console.log("res: ", res);
+            if (res.status === 200) {
+                toast("Deleted Successfully", { theme: "light" });
+                    setTimeout(emptyCategory, 1500);
+            } else {
+                alert("Failed to delete the item");
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    }
     return (
         <div className="game" style={{
             height: '78%',
@@ -60,6 +94,7 @@ const Game = () => {
             textAlign: 'center',
             position: "relative"
         }}>
+            <ToastContainer/>
             <div className="curve-container" style={{
                 width: '100%',
                 height: '30%',
@@ -115,8 +150,13 @@ const Game = () => {
                         <br />
                         <h3 style={{ fontFamily: "Open Sans" }}>{selectedTruth.text}</h3>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                            <ThumbUpOutlinedIcon />
-                            <h3> {selectedTruth.likes}</h3>
+                            <Button onClick={() => handleLikeClick('truth', selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
+                                <ThumbUpOutlinedIcon />
+                            </Button>
+                            <h3>{selectedTruth.likes}</h3>
+                            <button onClick={() => handleDeleteClick(selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
+                                <DeleteOutlineIcon />
+                            </button>
                         </div>
                     </>
                 )}
@@ -126,8 +166,13 @@ const Game = () => {
                         <br />
                         <h3 style={{ fontFamily: "Open Sans" }}>{selectedDare.text}</h3>
                         <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                            <ThumbUpOutlinedIcon />
-                            <h3> {selectedDare.likes}</h3>
+                            <Button onClick={() => handleLikeClick('dare', selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
+                                <ThumbUpOutlinedIcon />
+                            </Button>
+                            <h3 >{selectedDare.likes}</h3>
+                            <button onClick={() => handleDeleteClick(selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
+                                <DeleteOutlineIcon />
+                            </button>
                         </div>
                     </>
                 )}
