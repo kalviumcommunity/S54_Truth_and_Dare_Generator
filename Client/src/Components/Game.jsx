@@ -20,9 +20,10 @@ const Game = () => {
     const [selectedTruth, setSelectedTruth] = useState(null)
     const [selectedDare, setSelectedDare] = useState(null)
     const [key, setKey] = useState(0)
-
+    const [isLoading, setIsLoading] = useState(false)
     useEffect(() => {
         const fetchData = async () => {
+            setIsLoading(true)
             try {
                 const response = await axios.get('https://truth-and-dare-generator.onrender.com/td')
                 const data = response.data
@@ -35,9 +36,10 @@ const Game = () => {
             } catch (error) {
                 console.error('Error fetching data:', error)
             }
+            setIsLoading(false)
         }
         fetchData()
-    }, [category, key])
+    }, [category])
 
     const handleTruthClick = () => {
         setSelectedTruth(truthData[Math.floor(Math.random() * truthData.length)])
@@ -50,7 +52,7 @@ const Game = () => {
         setSelectedTruth(null)
         setKey(prevKey => prevKey + 1)
     }
-    const emptyCategory=()=>{
+    const emptyCategory = () => {
         setCategory('')
     }
     const handleLikeClick = async (type, itemId) => {
@@ -74,7 +76,7 @@ const Game = () => {
             console.log("res: ", res);
             if (res.status === 200) {
                 toast("Deleted Successfully", { theme: "light" });
-                    setTimeout(emptyCategory, 1500);
+                setTimeout(emptyCategory, 1500);
             } else {
                 alert("Failed to delete the item");
             }
@@ -94,7 +96,7 @@ const Game = () => {
             textAlign: 'center',
             position: "relative"
         }}>
-            <ToastContainer/>
+            <ToastContainer />
             <div className="curve-container" style={{
                 width: '100%',
                 height: '30%',
@@ -144,6 +146,7 @@ const Game = () => {
                 <img src={arrow} alt="" style={{ transform: "rotate(90deg)" }} />
             </button>
             <div style={{ padding: "1vmax 3vmax" }}>
+                {isLoading && (<>   <div className="loader"></div>  </> )}
                 {selectedTruth && (
                     <>
                         <h2 style={{ textDecoration: "underline" }}>Truth</h2>

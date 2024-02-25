@@ -27,7 +27,7 @@ const Forms = ({ handleCloseModal }) => {
     return (
         <div className='form-container'>
             <ToastContainer />
-            <fieldset>
+            <fieldset style={{border:"1px white solid",borderRadius:"10px"}}>
                 <form onSubmit={handleSubmit(FormSubmitHandler)}>
                     <h3>Text : </h3>
                     <input type="text" name='Text' {...register("text", {

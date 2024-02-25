@@ -1,8 +1,18 @@
 const express = require("express");
 
 const td = require("./schema.js");
+const TDvalidate = require("./TDvalidate.js");
 
 const router = express.Router();
+
+const validateTD = (req, res, next) => {
+  let { error } = TDvalidate.validate(req.body);
+  if (error) {
+    res.status(404).send(error.details[0].message);
+  } else {
+    next();
+  }
+};
 
 router.get("/", async (req, res) => {
   try {
@@ -22,7 +32,7 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.post("/", async (req, res) => {
+router.post("/",validateTD, async (req, res) => {
   console.log(req.body);
   //   res.json({ data: req.body });
   const tds = new td({
