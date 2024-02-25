@@ -48,19 +48,21 @@ const Navbar = () => {
           {/* </Link> */}
         </HStack>
       </Flex>
-      <Button
-        bg="#F7174E"
-        color="white"
-        fontSize="1.5vmax"
-        // fontWeight="100"
-        borderRadius="50px"
-        border="none"
-        px="2vw"
-        py="1.6vh"
-        cursor={"pointer"}
-      >
-        Sign Up
-      </Button>
+      <Link to={"/signup"}>
+        <Button
+          bg="#F7174E"
+          color="white"
+          fontSize="1.5vmax"
+          // fontWeight="100"
+          borderRadius="50px"
+          border="none"
+          px="2vw"
+          py="1.6vh"
+          cursor={"pointer"}
+        >
+          Sign Up
+        </Button>
+      </Link>
     </Flex>
   );
 };
