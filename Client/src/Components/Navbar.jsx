@@ -4,7 +4,6 @@ import { Icon } from '@chakra-ui/icon'
 import { Image } from '@chakra-ui/image'
 import { Box, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
 import { Link } from 'react-router-dom'
-// import logo from "../assets/logo.png"
 import React, { useContext } from 'react'
 import { AppContext } from '../context/ParentContext'
 import Cookies from "js-cookie"
@@ -13,7 +12,7 @@ const Navbar = () => {
   const {signin,setSignin}=useContext(AppContext)
   const logOut =()=>{
     Cookies.remove('username')
-    // Cookies.remove('token')
+    Cookies.remove('token')
     setSignin(false)
   }
   return (

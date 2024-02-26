@@ -45,7 +45,6 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", validateTD, async (req, res) => {
   console.log(req.body);
-  //   res.json({ data: req.body });
   const tds = new td({
     type: req.body.type,
     likes: req.body.likes,
@@ -60,16 +59,6 @@ router.post("/", validateTD, async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
-// router.post("/register", async (req, res) => {
-//   console.log(req.body);
-//   try {
-//     const newuser = await Users.create(req.body);
-//     res.status(200).send(newuser);
-//   } catch (err) {
-//     console.error(err);
-//     res.send(" error " + err);
-//   }
-// });
 router.post("/register", validateUser, async (req, res) => {
   try {
     const olduser = await Users.findOne({ email: req.body.email });
@@ -92,14 +81,11 @@ router.post("/register", validateUser, async (req, res) => {
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await Users.findOne({ email });
-
     if (!user) {
       return res.json({ status: "error", message: "User not Found" });
     }
-
     if (await bcrypt.compare(password, user.password)) {
       const payload = { userId: user._id, email };
       const token = jwt.sign(payload, process.env.JWT_SECRET);
@@ -114,7 +100,22 @@ router.post("/login", async (req, res) => {
     res.status(500).json({ status: "error", error: "Internal Server Error" });
   }
 });
-
+router.post("/userData", async (req, res) => {
+  const { token } = req.body;
+  try {
+    const user = jwt.verify(token, process.env.JWT_SECRET);
+    const userEmail = user.email;
+    Users.findOne({ email: userEmail })
+      .then((data) => {
+        res.send({ status: "ok", data: data });
+      })
+      .catch((error) => {
+        res.send({ error: "error", data: error });
+      });
+  } catch {
+    (err) => console.log(err);
+  }
+});
 router.patch("/:id", async (req, res) => {
   try {
     const tdItem = await td.findById(req.params.id);

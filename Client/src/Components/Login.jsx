@@ -22,20 +22,23 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import { AppContext } from '../context/ParentContext';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
 
     const [show, setShow] = useState(false);
-    const [cShow, setCShow] = useState(false);
     const handleClick = () => setShow(!show);
-    const handleClick2 = () => setCShow(!cShow);
     const [error, setError] = useState(null)
     const {signin,setSignin}=useContext(AppContext)
     const { handleSubmit, register, formState: { errors, isSubmitting }, getValues } = useForm()
     const Navigate=useNavigate();
     useEffect(()=>{
         if(signin){
-            Navigate("/")
+            toast.success("Login Successful!",{theme:"light"})
+            setTimeout(() => {
+                Navigate("/")
+            }, 2000);
         }
     },[signin])
 
@@ -49,7 +52,7 @@ const Login = () => {
                         console.log("response: ", response);
                         if (response.status == "201") {
                             Cookies.set("username",`${values.email}`)
-                            // Cookies.set("token",`${response.data.token}`)
+                            Cookies.set("token",`${response.data.token}`)
                             setSignin(true)
                         } else {
                             console.log(response.data.message)
@@ -88,13 +91,13 @@ const Login = () => {
                     </Button>
                 </Link>
                 <Center>
+                    <ToastContainer/>
                     <Stack spacing={4}>
                         <Stack align="center">
                             <Heading fontSize="4xl" color="black">Log In to your Account</Heading>
                         </Stack>
                         <VStack as="form" boxSize={{ base: 'xs', sm: 'sm', md: 'md' }} h="max-content !important" bg='#F7174E' rounded="lg" boxShadow="lg" p={{ base: 5, sm: 10 }} spacing={8} color="white" onSubmit={handleSubmit(submitHandler)}>
                             <VStack spacing={4} w="100%">
-                                {error && error}
                                 <FormControl>
                                     <FormLabel htmlFor='email'>Username / Email</FormLabel>
                                     <Input bg="white" rounded="md" id="email" type="text" color={"black"} {...register("email", { required: 'Enter Your email' })} />
@@ -118,6 +121,7 @@ const Login = () => {
                                         {error && error}
                                 </FormControl>
                             </VStack>
+                            {error && error}
                             <VStack w="100%">
                                 <Button color="white" bg={"green"} rounded="md" w="100%" isLoading={isSubmitting} type='submit' _hover={{ bg: "green" }}>
                                     <h1>Log in</h1>
