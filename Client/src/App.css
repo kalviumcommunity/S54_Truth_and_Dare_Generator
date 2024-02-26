@@ -11,19 +11,7 @@
   margin: 2rem auto;
   width: 35vw;
 }
-.signup-form-container{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  border-radius: 20px;
-  padding: 20px;
-  margin: 2rem auto;
-  width: 35vw;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
-}
+
 form{
   display: flex;
   flex-direction: column;
@@ -54,19 +42,6 @@ form input[type="submit"]{
   cursor: pointer;
   font-size: 18px;
 }
-.signup-form-container input[type="submit"]{
-  background-color: #F7174E;
-  color: white;
-  border-radius: 20px;
-  margin-top: 20px;
-  padding: 10px;
-  cursor: pointer;
-  font-size: 18px;
-  -webkit-border-radius: 20px;
-  -moz-border-radius: 20px;
-  -ms-border-radius: 20px;
-  -o-border-radius: 20px;
-}
 form h3{
   font-weight: 500;
   margin-top: 0.5rem;
@@ -74,10 +49,6 @@ form h3{
 }
 .err{
   color: white;
-  font-size: 0.9rem;
-}
-.signup-err{
-  color: red;
   font-size: 0.9rem;
 }
 .success{
@@ -96,7 +67,7 @@ form h3{
 }
 /* HTML: <div class="loader"></div> */
 .loader {
-  width: 50px;
+  width: 80px;
   aspect-ratio: 1;
   --c:no-repeat radial-gradient(farthest-side,#514b82 92%,#0000);
   background: 

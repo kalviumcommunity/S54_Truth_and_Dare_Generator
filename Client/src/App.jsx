@@ -7,6 +7,7 @@ import Footer from './Components/Footer'
 import { Route, Routes } from 'react-router-dom'
 import Signup from './Components/Signup'
 import { ChakraProvider } from '@chakra-ui/react'
+import Login from './Components/Login'
 
 function App() {
 
@@ -15,9 +16,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />}></Route>
         <Route path="*" element={<h1>PAGE NOT FOUND</h1>}></Route>
-        {/* <ChakraProvider> */}
-          <Route path='/signup' element={<Signup />}></Route>
-        {/* </ChakraProvider> */}
+        <Route path='/signup' element={<Signup />}></Route>
+        <Route path='/login' element={<Login/>}></Route>
       </Routes>
       <ParentContext />
     </>
