@@ -5,11 +5,19 @@ import { Image } from '@chakra-ui/image'
 import { Box, Flex, HStack, Heading, Text } from '@chakra-ui/layout'
 import { Link } from 'react-router-dom'
 // import logo from "../assets/logo.png"
-import React from 'react'
+import React, { useContext } from 'react'
+import { AppContext } from '../context/ParentContext'
+import Cookies from "js-cookie"
 
 const Navbar = () => {
+  const {signin,setSignin}=useContext(AppContext)
+  const logOut =()=>{
+    Cookies.remove('username')
+    // Cookies.remove('token')
+    setSignin(false)
+  }
   return (
-    <Flex margin={"1vmax"}  justify="center" align="center" top={0}>
+    <Flex margin={"1vmax"} justify="center" align="center" top={0}>
       <Flex
         bg="white"
         borderRadius="50px"
@@ -48,7 +56,22 @@ const Navbar = () => {
           {/* </Link> */}
         </HStack>
       </Flex>
-      <Link to={"/signup"}>
+      {signin ? <Link to={"/Login"}>
+        <Button
+          bg="#F7174E"
+          color="white"
+          fontSize="1.5vmax"
+          // fontWeight="100"
+          borderRadius="50px"
+          border="none"
+          px="2vw"
+          py="1.6vh"
+          cursor={"pointer"}
+          onClick={logOut}
+        >
+          Log out
+        </Button>
+      </Link> : <Link to={"/signup"}>
         <Button
           bg="#F7174E"
           color="white"
@@ -62,7 +85,8 @@ const Navbar = () => {
         >
           Sign Up
         </Button>
-      </Link>
+      </Link>}
+
     </Flex>
   );
 };

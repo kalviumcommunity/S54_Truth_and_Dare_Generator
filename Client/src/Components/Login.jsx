@@ -1,9 +1,8 @@
+import React, { useContext, useEffect } from 'react'
 import { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form"
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
-
+import Cookies from "js-cookie"
 import {
     Container,
     FormControl,
@@ -22,31 +21,40 @@ import {
     ChakraProvider,
 } from '@chakra-ui/react';
 import axios from 'axios';
+import { AppContext } from '../context/ParentContext';
 
-const Signup = () => {
+const Login = () => {
+
     const [show, setShow] = useState(false);
     const [cShow, setCShow] = useState(false);
     const handleClick = () => setShow(!show);
     const handleClick2 = () => setCShow(!cShow);
     const [error, setError] = useState(null)
-    const Navigate=useNavigate()
+    const {signin,setSignin}=useContext(AppContext)
     const { handleSubmit, register, formState: { errors, isSubmitting }, getValues } = useForm()
-
+    const Navigate=useNavigate();
+    useEffect(()=>{
+        if(signin){
+            Navigate("/")
+        }
+    },[signin])
 
     const submitHandler = (values) => {
         console.log("values: ", values);
+
         return new Promise((resolve) => {
             setTimeout(() => {
-                axios.post("http://localhost:3000/td/register", values)
+                axios.post("http://localhost:3000/td/login", values)
                     .then(response => {
-                        if (response.data == "User already exists") {
-                            setError("User already exists with this email");
-                        }
                         console.log("response: ", response);
-                        toast.success("Account created successfully! Please log in.")
-                        setTimeout(()=>{
-                            Navigate("/login")
-                        },2500)
+                        if (response.status == "201") {
+                            Cookies.set("username",`${values.email}`)
+                            // Cookies.set("token",`${response.data.token}`)
+                            setSignin(true)
+                        } else {
+                            console.log(response.data.message)
+                            setError(response.data.message)
+                        }
                     })
                     .catch(error => {
                         console.error('Error:', error);
@@ -56,9 +64,9 @@ const Signup = () => {
         })
     }
 
+
     return (
         <ChakraProvider>
-            <ToastContainer />
             <Container maxW="100%" p={{ base: 5, md: 10 }} h="100vh" display={"flex"} alignItems={"center"} justifyContent={"center"}>
                 <Link to={"/"}>
                     <Button
@@ -76,31 +84,22 @@ const Signup = () => {
                         left={"0"}
                         _hover={{ bg: "#F7174E" }}
                     >
-                        <img src="arrow" alt="" style={{ transform: "rotate(90deg)" }} />
                         Back
                     </Button>
                 </Link>
                 <Center>
                     <Stack spacing={4}>
                         <Stack align="center">
-                            <Heading fontSize="4xl" color="black">Register Your Account</Heading>
+                            <Heading fontSize="4xl" color="black">Log In to your Account</Heading>
                         </Stack>
                         <VStack as="form" boxSize={{ base: 'xs', sm: 'sm', md: 'md' }} h="max-content !important" bg='#F7174E' rounded="lg" boxShadow="lg" p={{ base: 5, sm: 10 }} spacing={8} color="white" onSubmit={handleSubmit(submitHandler)}>
                             <VStack spacing={4} w="100%">
                                 {error && error}
-                                <FormControl >
-                                    <FormLabel htmlFor='name'>Your Full Name</FormLabel>
-                                    <Input bg="white" rounded="md" id="name" type="text" color={"black"}{...register("name", { required: 'Enter Your Full Name', minLength: { value: 4, message: 'Enter minimum 4 letters' } })} />
-                                    <Text color="white">
-                                        {errors.Name && errors.name.message}
-                                    </Text>
-                                </FormControl>
                                 <FormControl>
                                     <FormLabel htmlFor='email'>Username / Email</FormLabel>
-                                    <Input bg="white" rounded="md" id="email" type="text" color={"black"} {...register("email", { required: 'Enter Your email or username' })} />
+                                    <Input bg="white" rounded="md" id="email" type="text" color={"black"} {...register("email", { required: 'Enter Your email' })} />
                                     <Text color="white">
                                         {errors.email && errors.email.message}
-                                        {error && error}
                                     </Text>
                                 </FormControl>
                                 <FormControl >
@@ -116,28 +115,15 @@ const Signup = () => {
                                     <Text color="white">
                                         {errors.password && errors.password.message}
                                     </Text>
+                                        {error && error}
                                 </FormControl>
-                                {/* <FormControl >
-                                    <FormLabel htmlFor="confirmPassword">Confirm Password</FormLabel>
-                                    <InputGroup size="md">
-                                        <Input bg="white" color={"black"} rounded="md" id='confirmPassword' type={cShow ? 'text' : 'password'} {...register("confirmPassword", { required: 'Confirm Your Password', validate: value => value === getValues("password") || "The passwords do not match" })} />
-                                        <InputRightElement width="4.5rem">
-                                            <Button h="1.75rem" size="sm" rounded="md" bg='#79b8f3' onClick={handleClick2}>
-                                                {cShow ? 'Hide' : 'Show'}
-                                            </Button>
-                                        </InputRightElement>
-                                    </InputGroup>
-                                    <Text color="white">
-                                        {errors.confirmPassword && errors.confirmPassword.message}
-                                    </Text>
-                                </FormControl> */}
                             </VStack>
                             <VStack w="100%">
                                 <Button color="white" bg={"green"} rounded="md" w="100%" isLoading={isSubmitting} type='submit' _hover={{ bg: "green" }}>
-                                    <h1>Sign up</h1>
+                                    <h1>Log in</h1>
                                 </Button>
                                 <Stack direction="row" justifyContent="center" w="100%">
-                                    <Link to="/login" fontSize={{ base: 'md', sm: 'md' }} style={{ textDecoration: "underline" }} >Have an account?, Log in </Link>
+                                    <Link to="/signup" fontSize={{ base: 'md', sm: 'md' }} style={{ textDecoration: "underline" }} >Don't Have an account, Signup? </Link>
                                 </Stack>
                             </VStack>
                         </VStack>
@@ -145,7 +131,7 @@ const Signup = () => {
                 </Center>
             </Container>
         </ChakraProvider>
-    );
-};
+    )
+}
 
-export default Signup;
+export default Login

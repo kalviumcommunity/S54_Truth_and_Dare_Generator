@@ -8,9 +8,8 @@ const Forms = ({ handleCloseModal }) => {
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful } } = useForm();
 
     const FormSubmitHandler = (data) => {
-        toast("Submitted Successfully", { theme: "light" });
         console.log(data);
-
+        
         const postTD = async () => {
             try {
                 let res = await axios.post('https://truth-and-dare-generator.onrender.com/td', data);
@@ -22,6 +21,11 @@ const Forms = ({ handleCloseModal }) => {
             }
         };
         postTD()
+        toast.success("Submitted Successfully", { theme: "light" });
+        const close= () => {
+            setTimeout(handleCloseModal, 2000);
+        }
+        close();
     };
 
     return (
@@ -33,7 +37,7 @@ const Forms = ({ handleCloseModal }) => {
                     <input type="text" name='Text' {...register("text", {
                         required: "Fill the Text",
                         minLength: { value: 6, message: "Your text is too short" },
-                        maxLength: { value: 90, message: "Maximum 90 chars only" }
+                        maxLength: { value: 150, message: "Maximum 150 chars only" }
                     })} />
                     <p className='err'>{errors.text?.message} </p>
 
@@ -60,9 +64,7 @@ const Forms = ({ handleCloseModal }) => {
                     </select>
                     <p className='err'>{errors.category?.message} </p>
 
-                    <input type="submit" value={"Submit"} onClick={() => {
-                        setTimeout(handleCloseModal, 1300);
-                    }} />
+                    <input type="submit" value={"Submit"} />
                 </form>
             </fieldset>
         </div>
