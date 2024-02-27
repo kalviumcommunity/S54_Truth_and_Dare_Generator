@@ -50,6 +50,7 @@ router.post("/", validateTD, async (req, res) => {
     likes: req.body.likes,
     category: req.body.category,
     text: req.body.text,
+    created_by:req.body.created_by
   });
 
   try {
@@ -114,6 +115,15 @@ router.post("/userData", async (req, res) => {
       });
   } catch {
     (err) => console.log(err);
+  }
+});
+router.post("/users", async (req, res) => {
+  try {
+    const allUsers = await Users.find();
+    res.json(allUsers);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 router.patch("/:id", async (req, res) => {
