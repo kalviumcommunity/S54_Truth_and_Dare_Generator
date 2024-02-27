@@ -65,6 +65,10 @@ form h3{
 #LikeButton:hover{
   color: blue;
 }
+#userText{
+  margin: 1vh;
+  border-bottom: 1px solid  grey;
+}
 /* HTML: <div class="loader"></div> */
 .loader {
   width: 80px;

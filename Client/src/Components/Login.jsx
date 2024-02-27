@@ -47,7 +47,7 @@ const Login = () => {
 
         return new Promise((resolve) => {
             setTimeout(() => {
-                axios.post("http://localhost:3000/td/login", values)
+                axios.post("https://truth-and-dare-generator.onrender.com/td/login", values)
                     .then(response => {
                         console.log("response: ", response);
                         if (response.status == "201") {

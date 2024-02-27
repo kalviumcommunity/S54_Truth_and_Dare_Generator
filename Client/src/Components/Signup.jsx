@@ -37,7 +37,7 @@ const Signup = () => {
         console.log("values: ", values);
         return new Promise((resolve) => {
             setTimeout(() => {
-                axios.post("http://localhost:3000/td/register", values)
+                axios.post("https://truth-and-dare-generator.onrender.com/td/register", values)
                     .then(response => {
                         if (response.data == "User already exists") {
                             setError("User already exists with this email");

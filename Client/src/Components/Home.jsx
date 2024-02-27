@@ -8,18 +8,18 @@ import Footer from './Footer';
 import CreateTD from './CreateTD';
 import Cookies from 'js-cookie';
 import axios from 'axios';
+import DropdownMenu from './DropdownMenu';
 
 const Home = () => {
-  const { category, setCategory,setSignin,setUserData } = useContext(AppContext)
+  const { category, setCategory,signin,setSignin,setUserData } = useContext(AppContext)
   // { console.log(category) }
   useEffect(() => {
     const token = Cookies.get('token')
-    axios.post("http://localhost:3000/td/userData", { token })
+    axios.post("https://truth-and-dare-generator.onrender.com/td/userData", { token })
       .then(response => {
         console.log("userdata ", response.data.data);
         setSignin(true)
         setUserData(response.data.data)
-        // document.cookie = `UserName=${response.data.data.name}`;
       })
       .catch(error => {
         console.error('Error:', error);
@@ -32,6 +32,7 @@ const Home = () => {
         {category ? <Game /> : <GameStart />}
       </div>
       <CreateTD />
+      {signin && <DropdownMenu/>}
       <Footer />
     </div>
   )

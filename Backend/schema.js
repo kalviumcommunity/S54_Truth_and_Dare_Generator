@@ -16,7 +16,11 @@ const tdSchema = new mongoose.Schema({
   text: {
     type: String,
     required:true
-  }
+  },
+  created_by:{
+    type:String,
+    required:true
+  },
 });
 
 const td = mongoose.model("tds", tdSchema);

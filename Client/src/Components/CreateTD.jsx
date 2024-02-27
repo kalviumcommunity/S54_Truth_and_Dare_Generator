@@ -13,10 +13,14 @@ import { AppContext } from '../context/ParentContext'
 
 const CreateTD = () => {
     const [isOpen, setIsOpen] = useState(false)
-    const { category, setCategory } = useContext(AppContext)
+    const { category, setCategory,signin } = useContext(AppContext)
 
     const handleOpenModal = () => {
-        setIsOpen(true)
+        if(signin){
+            setIsOpen(true)
+        }else{
+            window.alert("Please login to add the data")
+        }
     }
 
     const handleCloseModal = () => {
@@ -52,9 +56,9 @@ const CreateTD = () => {
                 <ModalContent
                     bg="#F7174E"
                     w="40vw"
-                    h="63vh"
+                    h="74vh"
                     position={"fixed"}
-                    top={"25%"}
+                    top={"21%"}
                     left={"29%"}
                     display="flex"
                     flexDirection="column"

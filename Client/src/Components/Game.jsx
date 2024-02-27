@@ -14,7 +14,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Game = () => {
-    const { category, setCategory } = useContext(AppContext)
+    const { category, setCategory, signin } = useContext(AppContext)
     const [truthData, setTruthData] = useState([])
     const [dareData, setDareData] = useState([])
     const [selectedTruth, setSelectedTruth] = useState(null)
@@ -56,32 +56,40 @@ const Game = () => {
         setCategory('')
     }
     const handleLikeClick = async (type, itemId) => {
-        try {
-            const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { action: 'like' });
-            console.log("response: ", res);
-            const updatedLikes = res.data.likes;
-            if (type === 'truth') {
-                setSelectedTruth(prevTruth => ({ ...prevTruth, likes: updatedLikes }));
-            } else if (type === 'dare') {
-                setSelectedDare(prevDare => ({ ...prevDare, likes: updatedLikes }));
+        if (signin) {
+            try {
+                const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { action: 'like' });
+                console.log("response: ", res);
+                const updatedLikes = res.data.likes;
+                if (type === 'truth') {
+                    setSelectedTruth(prevTruth => ({ ...prevTruth, likes: updatedLikes }));
+                } else if (type === 'dare') {
+                    setSelectedDare(prevDare => ({ ...prevDare, likes: updatedLikes }));
+                }
+            } catch (error) {
+                console.error('Error updating likes:', error);
             }
-        } catch (error) {
-            console.error('Error updating likes:', error);
+        } else {
+            window.alert("Please Login to use that feature")
         }
     };
 
     const handleDeleteClick = async (itemId) => {
-        try {
-            const res = await axios.delete(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
-            console.log("res: ", res);
-            if (res.status === 200) {
-                toast("Deleted Successfully", { theme: "light" });
-                setTimeout(emptyCategory, 1500);
-            } else {
-                alert("Failed to delete the item");
+        if (signin) {
+            try {
+                const res = await axios.delete(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
+                console.log("res: ", res);
+                if (res.status === 200) {
+                    toast("Deleted Successfully", { theme: "light" });
+                    setTimeout(emptyCategory, 1500);
+                } else {
+                    alert("Failed to delete the item");
+                }
+            } catch (err) {
+                console.log(err);
             }
-        } catch (err) {
-            console.log(err);
+        } else {
+            window.alert("Please Login to use that feature")
         }
     }
     return (
@@ -112,72 +120,85 @@ const Game = () => {
                     width: "100%",
                     textAlign: "center",
                     top: '25%',
+                    left:"29%",
                     fontSize: 'larger'
                 }}>
-                    <h1>Spin the wheel</h1>
+                    {/* <h1>Spin the wheel</h1> */}
+                    <button className='category' style={{
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        borderRadius: '50px',
+                        paddingRight: '2vmin',
+                        cursor: 'pointer',
+                        width: "40%",
+                        alignItems: 'center',
+                        backgroundColor: '#EAF0FF'
+                    }} onClick={() => setCategory('')}>
+                        <div className="category-content" style={{
+                            display: 'flex',
+                            alignItems: 'center',
+                            justifyContent: "space-between",
+                            fontSize: '1.5vmax',
+                            fontWeight: '600',
+                            marginLeft:"1vmax"
+                        }}>
+                            {
+                                {
+                                    Classic: <img src={Classic} alt="" />,
+                                    Party: <img src={Party} alt="" />,
+                                    Teens: <img src={Teens} alt="" />,
+                                    Mixed: <img src={Mixed} alt="" />
+                                }[category] || <img src={Classic} alt="" />}
+                            <h3>{category}</h3>
+                        </div>
+                        <img src={arrow} alt="" style={{ transform: "rotate(90deg)" }} />
+                    </button>
                 </div>
             </div>
-            <button className='category' style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                borderRadius: '50px',
-                paddingRight: '2vmin',
-                cursor: 'pointer',
-                width: "40%",
-                alignItems: 'center',
-                backgroundColor: '#EAF0FF'
-            }} onClick={() => setCategory('')}>
-                <div className="category-content" style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: "space-between",
-                    fontSize: '1.5vmax',
-                    fontWeight: '600'
-                }}>
-                    {
-                        {
-                            Classic: <img src={Classic} alt="" />,
-                            Party: <img src={Party} alt="" />,
-                            Teens: <img src={Teens} alt="" />,
-                            Mixed: <img src={Mixed} alt="" />
-                        }[category] || <img src={Classic} alt="" />}
-                    <span>{category}</span>
-                </div>
-                <img src={arrow} alt="" style={{ transform: "rotate(90deg)" }} />
-            </button>
-            <div style={{ padding: "1vmax 3vmax" }}>
-                {isLoading && (<>   <div className="loader"></div>  </> )}
+
+            <div style={{ padding: "1vmax 2vmax" }}>
+                {isLoading && (<>   <div className="loader"></div>  </>)}
                 {selectedTruth && (
-                    <>
-                        <h2 style={{ textDecoration: "underline" }}>Truth</h2>
+                    <div style={{ width: "100%" }}>
+                        <h1 style={{ textDecoration: "underline" }}>Truth</h1>
                         <br />
-                        <h3 style={{ fontFamily: "Open Sans" }}>{selectedTruth.text}</h3>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                            <Button onClick={() => handleLikeClick('truth', selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
-                                <ThumbUpOutlinedIcon />
-                            </Button>
-                            <h3>{selectedTruth.likes}</h3>
-                            <button onClick={() => handleDeleteClick(selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
-                                <DeleteOutlineIcon />
-                            </button>
+                        <h2 style={{ fontFamily: "Open Sans" }}>{selectedTruth.text}</h2>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div>
+                                {/* <h3>Created by: {selectedTruth.created_by}</h3> */}
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                                <Button onClick={() => handleLikeClick('truth', selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
+                                    <ThumbUpOutlinedIcon />
+                                </Button>
+                                <h3>{selectedTruth.likes}</h3>
+                                <button onClick={() => handleDeleteClick(selectedTruth._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
+                                    <DeleteOutlineIcon />
+                                </button>
+                            </div>
                         </div>
-                    </>
+                    </div>
                 )}
                 {selectedDare && (
-                    <>
-                        <h2 style={{ textDecoration: "underline" }}>Dare</h2>
+                    <div style={{ width: "100%" }}>
+                        <h1 style={{ textDecoration: "underline" }}>Dare</h1>
                         <br />
-                        <h3 style={{ fontFamily: "Open Sans" }}>{selectedDare.text}</h3>
-                        <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
-                            <Button onClick={() => handleLikeClick('dare', selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
-                                <ThumbUpOutlinedIcon />
-                            </Button>
-                            <h3 >{selectedDare.likes}</h3>
-                            <button onClick={() => handleDeleteClick(selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
-                                <DeleteOutlineIcon />
-                            </button>
+                        <h2 style={{ fontFamily: "Open Sans" }}>{selectedDare.text}</h2>
+                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                            <div>
+                                {/* <h3>Created by: {selectedDare.created_by}</h3> */}
+                            </div>
+                            <div style={{ display: "flex", alignItems: "center", justifyContent: "flex-end" }}>
+                                <Button onClick={() => handleLikeClick('dare', selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white" }} id='LikeButton'>
+                                    <ThumbUpOutlinedIcon />
+                                </Button>
+                                <h3 >{selectedDare.likes}</h3>
+                                <button onClick={() => handleDeleteClick(selectedDare._id)} style={{ cursor: "pointer", border: "none", backgroundColor: "white", marginLeft: "7px", marginTop: "3px" }} id='deleteButton'>
+                                    <DeleteOutlineIcon />
+                                </button>
+                            </div>
                         </div>
-                    </>
+                    </div>
                 )}
             </div>
             <div className='button-container' style={{ width: "100%", display: "flex", justifyContent: "space-around", position: "absolute", bottom: "2vmin" }}>
