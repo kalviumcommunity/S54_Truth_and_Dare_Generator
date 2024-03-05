@@ -9,14 +9,13 @@
   justify-content: center;
   padding: 20px;
   margin: 2rem auto;
-  width: 35vw;
+  min-width: 35vw;
 }
 
 form{
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
-  padding: 20px;
   border-radius: 10px;
   height: auto;
 }
@@ -27,13 +26,14 @@ legend{
 }
 form input{
   padding: 10px;
-  background-color: #eee;
-  border: 1px solid #ddd;
+  width: 100%;
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
 }
-/* #root{
-  width: 100vw;
-  height: 100vj;
-} */
+
 form input[type="submit"]{
   background-color: #41a345ff;
   color: white;
@@ -48,8 +48,8 @@ form h3{
   color: white;
 }
 .err{
-  color: white;
-  font-size: 0.9rem;
+  color: rgb(255, 255, 255);
+  font-size: 1rem;
 }
 .success{
   background-color: #F7174E;
@@ -62,9 +62,10 @@ form h3{
 #deleteButton{
   color: red;
 }
-#LikeButton:hover{
+#LikeButton{
   color: blue;
 }
+
 #userText{
   margin: 1vh;
   border-bottom: 1px solid  grey;

@@ -1,8 +1,7 @@
-import React, { useEffect } from 'react'
-import GameStart from './GameStart'
-import Game from './Game'
+import React, { useEffect, useContext } from 'react';
+import GameStart from './GameStart';
+import Game from './Game';
 import { AppContext } from '../context/ParentContext';
-import { useContext } from 'react'
 import Navbar from './Navbar';
 import Footer from './Footer';
 import CreateTD from './CreateTD';
@@ -11,20 +10,21 @@ import axios from 'axios';
 import DropdownMenu from './DropdownMenu';
 
 const Home = () => {
-  const { category, setCategory,signin,setSignin,setUserData } = useContext(AppContext)
-  // { console.log(category) }
+  const { category, setCategory, signin, setSignin, setUserData } = useContext(AppContext);
+  const username = Cookies.get('username');
+
   useEffect(() => {
-    const token = Cookies.get('token')
+    const token = Cookies.get('token');
     axios.post("https://truth-and-dare-generator.onrender.com/td/userData", { token })
       .then(response => {
-        console.log("userdata ", response.data.data);
-        setSignin(true)
-        setUserData(response.data.data)
+        setSignin(true);
+        setUserData(response.data.data);
       })
       .catch(error => {
         console.error('Error:', error);
       });
-  }, [])
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -32,10 +32,10 @@ const Home = () => {
         {category ? <Game /> : <GameStart />}
       </div>
       <CreateTD />
-      {signin && <DropdownMenu/>}
+      {username === 'arjun@gmail.com' && <DropdownMenu />}
       <Footer />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -2,7 +2,7 @@ const express = require("express");
 const bcrypt = require("bcryptjs");
 const td = require("./schema.js");
 const TDvalidate = require("./TDvalidate.js");
-const Users = require("./UserSchema.js");
+const Users = require ("./UserSchema.js");
 const uservalidate = require("./UserValidate.js");
 const jwt = require("jsonwebtoken");
 

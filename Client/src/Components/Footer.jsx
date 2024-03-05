@@ -1,6 +1,5 @@
 import React from 'react'
-// import logo from "../assets/logo.png"
-import { Box, Flex, Stack, Heading, Text, VStack, HStack } from '@chakra-ui/layout'
+import { Box, HStack, Text } from '@chakra-ui/layout'
 import { ChevronUpIcon } from '@chakra-ui/icons'
 import GitHubIcon from '@mui/icons-material/GitHub'
 import LinkedInIcon from '@mui/icons-material/LinkedIn'
@@ -8,12 +7,10 @@ import MailIcon from '@mui/icons-material/Mail'
 import XIcon from '@mui/icons-material/X'
 
 const Footer = () => {
-
   return (
     <Box width={"100%"} bottom={"0"} bg={"black"} color={"white"} >
       <HStack w={"100%"} borderBottom={"2px solid white"} display={"flex"} justifyContent={"space-around"} >
         <Box padding={"10px"} >
-          {/* <img src={logo} alt="" /> */}
           <svg width="6vmax" height="3.1vmax" viewBox="0 0 302 152" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0.581877 32.2532C0.260515 28.9551 2.67363 26.021 5.97172 25.6996L263.751 0.581937C267.049 0.260574 269.983 2.67369 270.304 5.97178L274.96 53.7455C275.281 57.0436 272.868 59.9778 269.57 60.2991L11.7905 85.4168C8.49239 85.7382 5.55825 83.325 5.23689 80.027L0.581877 32.2532Z" fill="#F7174E" />
             <path d="M26.1772 97.9471C25.8559 94.649 28.269 91.7148 31.5671 91.3935L289.346 66.2758C292.644 65.9544 295.578 68.3675 295.9 71.6656L300.555 119.439C300.876 122.737 298.463 125.672 295.165 125.993L37.3858 151.111C34.0877 151.432 31.1536 149.019 30.8322 145.721L26.1772 97.9471Z" fill="#F7174E" />
@@ -37,7 +34,6 @@ const Footer = () => {
       <Box padding={"15px"} textAlign="center">
         <Text fontSize={"1.2vmax"}>@ 2024 All Rights Reserved . </Text>
       </Box>
-
     </Box>
   )
 }

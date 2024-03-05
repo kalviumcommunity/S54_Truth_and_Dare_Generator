@@ -1,8 +1,7 @@
-import React, { useContext, useEffect } from 'react'
-import { useState } from 'react';
-import { Link,useNavigate } from "react-router-dom";
-import { useForm } from "react-hook-form"
-import Cookies from "js-cookie"
+import React, { useState, useEffect, useContext } from 'react';
+import { Link, useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import Cookies from "js-cookie";
 import {
     Container,
     FormControl,
@@ -11,12 +10,10 @@ import {
     Stack,
     Button,
     Heading,
-    useColorModeValue,
     VStack,
     Center,
     InputGroup,
     InputRightElement,
-    FormErrorMessage,
     Text,
     ChakraProvider,
 } from '@chakra-ui/react';
@@ -24,49 +21,45 @@ import axios from 'axios';
 import { AppContext } from '../context/ParentContext';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { CloseIcon, ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 
 const Login = () => {
-
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
-    const [error, setError] = useState(null)
-    const {signin,setSignin}=useContext(AppContext)
-    const { handleSubmit, register, formState: { errors, isSubmitting }, getValues } = useForm()
-    const Navigate=useNavigate();
-    useEffect(()=>{
-        if(signin){
-            toast.success("Login Successful!",{theme:"light"})
+    const [error, setError] = useState(null);
+    const { signin, setSignin } = useContext(AppContext);
+    const { handleSubmit, register, formState: { errors, isSubmitting }, getValues } = useForm();
+    const Navigate = useNavigate();
+
+    useEffect(() => {
+        if (signin) {
+            toast.success("Login Successful!", { theme: "light" });
             setTimeout(() => {
-                Navigate("/")
+                Navigate("/");
             }, 2000);
         }
-    },[signin])
+    }, [signin]);
 
     const submitHandler = (values) => {
-        console.log("values: ", values);
-
         return new Promise((resolve) => {
             setTimeout(() => {
                 axios.post("https://truth-and-dare-generator.onrender.com/td/login", values)
                     .then(response => {
-                        console.log("response: ", response);
-                        if (response.status == "201") {
-                            Cookies.set("username",`${values.email}`)
-                            Cookies.set("token",`${response.data.token}`)
-                            setSignin(true)
+                        if (response.status === 201) {
+                            Cookies.set("username", values.email);
+                            Cookies.set("token", response.data.token);
+                            setSignin(true);
                         } else {
-                            console.log(response.data.message)
-                            setError(response.data.message)
+                            setError(response.data.message);
                         }
                     })
                     .catch(error => {
                         console.error('Error:', error);
                     });
-                resolve()
-            }, 1000)
-        })
-    }
-
+                resolve();
+            }, 1000);
+        });
+    };
 
     return (
         <ChakraProvider>
@@ -79,19 +72,17 @@ const Login = () => {
                         borderRadius="50px"
                         border="none"
                         margin={"1vw"}
-                        px="2vw"
-                        py="1.6vh"
                         cursor={"pointer"}
                         position={"fixed"}
                         top={"0"}
                         left={"0"}
                         _hover={{ bg: "#F7174E" }}
                     >
-                        Back
+                        <CloseIcon />
                     </Button>
                 </Link>
                 <Center>
-                    <ToastContainer/>
+                    <ToastContainer />
                     <Stack spacing={4}>
                         <Stack align="center">
                             <Heading fontSize="4xl" color="black">Log In to your Account</Heading>
@@ -100,28 +91,27 @@ const Login = () => {
                             <VStack spacing={4} w="100%">
                                 <FormControl>
                                     <FormLabel htmlFor='email'>Username / Email</FormLabel>
-                                    <Input bg="white" rounded="md" id="email" type="text" color={"black"} {...register("email", { required: 'Enter Your email' })} />
-                                    <Text color="white">
+                                    <Input placeholder='enter username' bg="white" rounded="md" id="email" type="text" color={"black"} {...register("email", { required: 'Enter Your email' })} />
+                                    <Text color="white" className='err'>
                                         {errors.email && errors.email.message}
                                     </Text>
                                 </FormControl>
-                                <FormControl >
+                                <FormControl>
                                     <FormLabel htmlFor="password">Password</FormLabel>
                                     <InputGroup size="md">
-                                        <Input bg="white" color={"black"} rounded="md" id="password" type={show ? 'text' : 'password'} {...register("password", { required: 'Enter Password', minLength: { value: 8, message: 'Enter minimum 8 chars' }, pattern: { value: '/^(?=.[0-9])(?=.[a-z])(?=.[A-Z])(?=.[*.!@$%^&(){}[]:;<>,.?/~_+-=|\])/', message: "Password Not Valid" } })} />
+                                        <Input placeholder='enter password' bg="white" color={"black"} rounded="md" id="password" type={show ? 'text' : 'password'} {...register("password", { required: 'Enter Password', minLength: { value: 8, message: 'Enter minimum 8 chars' } })} />
                                         <InputRightElement width="4.5rem">
-                                            <Button h="1.75rem" size="sm" rounded="md" bg='#79b8f3' _hover={{ bg: useColorModeValue('gray.400', 'gray.800') }} onClick={handleClick}>
-                                                {show ? 'Hide' : 'Show'}
+                                            <Button h="1.75rem" size="sm" rounded="md" bg='#ffffff' onClick={handleClick}>
+                                                {show ? <ViewOffIcon /> : <ViewIcon />}
                                             </Button>
                                         </InputRightElement>
                                     </InputGroup>
-                                    <Text color="white">
+                                    <Text color="white" className='err'>
                                         {errors.password && errors.password.message}
                                     </Text>
-                                        {error && error}
+                                    {error && <Text color="white" className='err'>{error}</Text>}
                                 </FormControl>
                             </VStack>
-                            {error && error}
                             <VStack w="100%">
                                 <Button color="white" bg={"green"} rounded="md" w="100%" isLoading={isSubmitting} type='submit' _hover={{ bg: "green" }}>
                                     <h1>Log in</h1>
@@ -135,7 +125,7 @@ const Login = () => {
                 </Center>
             </Container>
         </ChakraProvider>
-    )
-}
+    );
+};
 
-export default Login
+export default Login;

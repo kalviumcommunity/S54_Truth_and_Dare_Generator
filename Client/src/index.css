@@ -1,74 +1,28 @@
 @import url('https://fonts.googleapis.com/css2?family=Federant&family=Fira+Sans&family=Inria+Sans&family=Inter:wght@100..900&family=Italianno&family=Lora&family=Montserrat:wght@500&family=Open+Sans:wght@300;400&family=Phudu:wght@300;400&family=Playfair+Display&family=Poppins:wght@300;400&family=Roboto:ital,wght@0,100;0,300;0,400;1,300&family=Rubik&family=Sofia+Sans:ital,wght@0,1..1000;1,1..1000&family=Titillium+Web:ital,wght@1,200;1,300&display=swap');
 
-*{
+* {
   margin: 0%;
   padding: 0%;
   box-sizing: border-box;
   font-family: "Inter", sans-serif;
-}
-.category{
-  border: none;
-  background-color: white;
-}
-.category:hover{
-  background-color: #EAF0FF;
-  /* transform: rotate(90deg); */
-}
-/* .game-starter {
-  height: 78%;
-  width: 35%;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  border: 1px solid;
-  border-radius: 25px;
-  text-align: center;
-}
-
-.curve-container {
-  width: 100%;
-  height: 30%;
-  border-radius: 25px 25px 0 0;
-  overflow: hidden;
-  position: relative;
-}
-
-.curve-container img {
-  width: 100%;
-  height: 100%;
-  /* object-fit: cover; 
-}
-.title{
-  color: rgb(255, 255, 255);
-  position: absolute;
-  z-index:  999;
-  left: 42%;
-  top: 28%;
-  font-size: larger;
-  /* margin-bottom: 3vmax; 
-}
-
-.categories {
-  display: flex;
-  flex-direction: column;
-  padding: 3vmax;
+  user-select: none;
 }
 
 .category {
-  display: flex;
-  justify-content: space-between;
-  border-radius: 50px;
-  padding: 1vmin 2vmin;
-  cursor: pointer;
+  border: none;
+  background-color: white;
 }
 
-.category-content {
-  display: flex;
-  align-items: center;
-  font-size: 1.9vmax;
-  font-weight: 600;
+.category:hover {
+  background-color: #3b60be;
 }
 
-.category-content img {
-  margin-right: 10px;
-} */
+#arrow-img {
+  margin-left: 2vmin;
+}
+
+@media screen and (min-width: 280px) and (max-width:550px) {
+  #game {
+    max-width: 90%;
+  }
+}
