@@ -3,23 +3,23 @@ const mongoose = require("mongoose");
 const tdSchema = new mongoose.Schema({
   type: {
     type: String,
-    required:true
+    required: true,
   },
   likes: {
-    type: Number,
-    default:0
+    type: [String],
+    default: [],
   },
-  category:{
-    type:String,
-    required:true
+  category: {
+    type: String,
+    required: true,
   },
   text: {
     type: String,
-    required:true
+    required: true,
   },
-  created_by:{
-    type:String,
-    required:true
+  created_by: {
+    type: String,
+    required: true,
   },
 });
 

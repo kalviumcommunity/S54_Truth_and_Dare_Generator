@@ -132,13 +132,23 @@ router.patch("/:id", async (req, res) => {
     if (!tdItem) {
       return res.status(404).json({ error: "td not found" });
     }
-    tdItem.likes += 1;
+
+    const userId = req.user.id; 
+    const userIndex = tdItem.likes.indexOf(userId);
+
+    if (userIndex !== -1) {
+      tdItem.likes.splice(userIndex, 1);
+    } else {
+      tdItem.likes.push(userId);
+    }
+
     const updatedTd = await tdItem.save();
     res.json(updatedTd);
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 router.delete("/:id", async (req, res) => {
   try {

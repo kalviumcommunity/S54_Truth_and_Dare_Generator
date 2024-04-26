@@ -13,17 +13,18 @@ import axios from 'axios';
 import { useForm } from 'react-hook-form';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const CreateTD = () => {
     const { register, handleSubmit, formState: { errors, isSubmitSuccessful } } = useForm();
     const { category, setCategory, signin } = useContext(AppContext);
     const [isOpen, setIsOpen] = useState(false);
-
+    const navigate=useNavigate()
     const handleOpenModal = () => {
         if (signin) {
             setIsOpen(true);
         } else {
-            window.alert("Please login to add the data");
+            navigate("/login")
         }
     };
 
@@ -65,6 +66,8 @@ const CreateTD = () => {
                 color="white"
                 cursor="pointer"
                 fontSize="30px"
+                height={"40px"}
+                width={"40px"}
                 onClick={handleOpenModal}
                 _hover={{ bg: "#F7174E" }}
             >

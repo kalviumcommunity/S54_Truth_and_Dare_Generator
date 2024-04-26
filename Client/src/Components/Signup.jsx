@@ -70,6 +70,8 @@ const Signup = () => {
                         cursor={"pointer"}
                         position={"fixed"}
                         top={"0"}
+                        width={"50px"}
+                        height={"50px"}
                         left={"0"}
                         _hover={{ bg: "#F7174E" }}
                     >

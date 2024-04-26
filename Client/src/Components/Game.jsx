@@ -12,6 +12,7 @@ import { ThumbUpOutlined as ThumbUpOutlinedIcon, DeleteOutline as DeleteOutlineI
 import axios from 'axios';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useNavigate } from 'react-router-dom';
 
 const Game = () => {
     const { category, setCategory, signin } = useContext(AppContext);
@@ -21,7 +22,7 @@ const Game = () => {
     const [selectedDare, setSelectedDare] = useState(null);
     const [key, setKey] = useState(0);
     const [isLoading, setIsLoading] = useState(false);
-
+    const navigate=useNavigate()
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -59,7 +60,7 @@ const Game = () => {
     const handleLikeClick = async (type, itemId) => {
         if (signin) {
             try {
-                const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { action: 'like' });
+                const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
                 const updatedLikes = res.data.likes;
                 if (type === 'truth') {
                     setSelectedTruth(prevTruth => ({ ...prevTruth, likes: updatedLikes }));
@@ -70,9 +71,10 @@ const Game = () => {
                 console.error('Error updating likes:', error);
             }
         } else {
-            window.alert("Please Login to use that feature");
+            navigate("/login")
         }
     };
+    
 
     const handleDeleteClick = async (itemId) => {
         if (signin) {
@@ -88,7 +90,7 @@ const Game = () => {
                 console.log(err);
             }
         } else {
-            window.alert("Please Login to use that feature");
+            navigate("/login")
         }
     };
 

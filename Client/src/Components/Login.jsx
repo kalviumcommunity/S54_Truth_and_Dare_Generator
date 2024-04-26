@@ -76,6 +76,8 @@ const Login = () => {
                         position={"fixed"}
                         top={"0"}
                         left={"0"}
+                        width={"50px"}
+                        height={"50px"}
                         _hover={{ bg: "#F7174E" }}
                     >
                         <CloseIcon />
@@ -85,7 +87,7 @@ const Login = () => {
                     <ToastContainer />
                     <Stack spacing={4}>
                         <Stack align="center">
-                            <Heading fontSize="4xl" color="black">Log In to your Account</Heading>
+                            <Heading fontSize="4xl" color="black">Log In</Heading>
                         </Stack>
                         <VStack as="form" boxSize={{ base: 'xs', sm: 'sm', md: 'md' }} h="max-content !important" bg='#F7174E' rounded="lg" boxShadow="lg" p={{ base: 5, sm: 10 }} spacing={8} color="white" onSubmit={handleSubmit(submitHandler)}>
                             <VStack spacing={4} w="100%">
