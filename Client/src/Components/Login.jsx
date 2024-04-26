@@ -27,7 +27,7 @@ const Login = () => {
     const [show, setShow] = useState(false);
     const handleClick = () => setShow(!show);
     const [error, setError] = useState(null);
-    const { signin, setSignin } = useContext(AppContext);
+    const { signin, setSignin,setUserId } = useContext(AppContext);
     const { handleSubmit, register, formState: { errors, isSubmitting }, getValues } = useForm();
     const Navigate = useNavigate();
 
@@ -49,6 +49,7 @@ const Login = () => {
                             Cookies.set("username", values.email);
                             Cookies.set("token", response.data.token);
                             setSignin(true);
+                            setUserId(response.data.userId);
                         } else {
                             setError(response.data.message);
                         }

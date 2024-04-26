@@ -92,7 +92,7 @@ router.post("/login", async (req, res) => {
       const token = jwt.sign(payload, process.env.JWT_SECRET);
       res
         .status(201)
-        .json({ message: "Login successful", username: user.name, token });
+        .json({ message: "Login successful",userId:user._id, username: user.name, token });
     } else {
       res.json({ status: "error", message: "Invalid Password" });
     }
@@ -133,7 +133,11 @@ router.patch("/:id", async (req, res) => {
       return res.status(404).json({ error: "td not found" });
     }
 
-    const userId = req.user.id; 
+    const userId = req.body.userId;
+    if (!userId) {
+      return res.status(400).json({ error: "User ID not provided" });
+    }
+
     const userIndex = tdItem.likes.indexOf(userId);
 
     if (userIndex !== -1) {
@@ -148,6 +152,7 @@ router.patch("/:id", async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 });
+
 
 
 router.delete("/:id", async (req, res) => {

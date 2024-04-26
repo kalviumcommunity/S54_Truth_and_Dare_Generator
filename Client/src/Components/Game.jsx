@@ -15,7 +15,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { useNavigate } from 'react-router-dom';
 
 const Game = () => {
-    const { category, setCategory, signin } = useContext(AppContext);
+    const { category, setCategory, signin,userId } = useContext(AppContext);
     const [truthData, setTruthData] = useState([]);
     const [dareData, setDareData] = useState([]);
     const [selectedTruth, setSelectedTruth] = useState(null);
@@ -57,10 +57,10 @@ const Game = () => {
         setCategory('');
     };
 
-    const handleLikeClick = async (type, itemId) => {
+    const handleLikeClick = async (type, itemId, userId) => {
         if (signin) {
             try {
-                const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`);
+                const res = await axios.patch(`https://truth-and-dare-generator.onrender.com/td/${itemId}`, { userId });
                 const updatedLikes = res.data.likes;
                 if (type === 'truth') {
                     setSelectedTruth(prevTruth => ({ ...prevTruth, likes: updatedLikes }));
@@ -74,6 +74,7 @@ const Game = () => {
             navigate("/login")
         }
     };
+    
     
 
     const handleDeleteClick = async (itemId) => {
